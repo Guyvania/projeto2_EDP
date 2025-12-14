@@ -4,7 +4,9 @@
 
 package com.mycompany.sistemaprincipalordenacao;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -29,5 +31,69 @@ class Ordenador {
             }
             arr[j + 1] = valor;
         }
+    }
+    
+    public static void mergeSort(int[] arr, int inicio, int fim) {
+        if (inicio < fim) {
+            int meio = (inicio + fim) / 2;
+            mergeSort(arr, inicio, meio);
+            mergeSort(arr, meio + 1, fim);
+            merge(arr, inicio, meio, fim);
+        }
+    }
+    
+    private static void merge(int[] arr, int inicio, int meio, int fim) {
+        int n1 = meio - inicio + 1;
+        int n2 = fim - meio;
+        
+        int[] esquerda = new int[n1];
+        int[] direita = new int[n2];
+        
+        for (int i = 0; i < n1; i++) esquerda[i] = arr[inicio + i];
+        for (int j = 0; j < n2; j++) direita[j] = arr[meio + 1 + j];
+        
+        int i = 0, j = 0, k = inicio;
+        while (i < n1 && j < n2) {
+            if (esquerda[i] <= direita[j]) {
+                arr[k] = esquerda[i];
+                i++;
+            } else {
+                arr[k] = direita[j];
+                j++;
+            }
+            k++;
+        }
+        
+        while (i < n1) {
+            arr[k] = esquerda[i];
+            i++;
+            k++;
+        }
+        
+        while (j < n2) {
+            arr[k] = direita[j];
+            j++;
+            k++;
+        }
+    }
+
+}
+
+class Sistema {
+    private List<Integer> tarefas = new ArrayList<>();
+    
+    public void adicionarTarefa(int id) {
+        tarefas.add(id);
+        System.out.println("Adicionou: " + id);
+    }
+    
+    public void ordenarTarefas() {
+        // Converter lista para array e ordenar
+        int[] array = new int[tarefas.size()];
+        for(int i = 0; i < array.length; i++) {
+            array[i] = tarefas.get(i);
+        }
+        Ordenador.insertionSort(array);
+        // Atualizar lista
     }
 }
