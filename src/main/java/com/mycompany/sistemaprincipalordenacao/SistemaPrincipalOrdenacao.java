@@ -88,10 +88,14 @@ class SistemaConcorrente {
     private List<Integer> tarefas = new ArrayList<>();
     private List<Integer> tarefasConcluidas = new ArrayList<>();
     
-    private volatile boolean executando = true;
-    private final Object lock = new Object();
+    //private volatile boolean executando = true;
+    //private final Object lock = new Object();
+    
+    public void adicionarTarefa(int id) {
+        tarefas.add(id);
+    }
     
     public synchronized void incrementarContador() {
-       
+       contador++;
     }
 }
