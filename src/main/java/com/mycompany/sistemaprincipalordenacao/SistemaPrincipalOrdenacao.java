@@ -82,21 +82,16 @@ class Ordenador {
     }
 }
 
-class Sistema {
+
+class SistemaConcorrente {
+    private int contador = 0;
     private List<Integer> tarefas = new ArrayList<>();
+    private List<Integer> tarefasConcluidas = new ArrayList<>();
     
-    public void adicionarTarefa(int id) {
-        tarefas.add(id);
-        System.out.println("Adicionou: " + id);
-    }
+    private volatile boolean executando = true;
+    private final Object lock = new Object();
     
-    public void ordenarTarefas() {
-        // Converter lista para array e ordenar
-        int[] array = new int[tarefas.size()];
-        for(int i = 0; i < array.length; i++) {
-            array[i] = tarefas.get(i);
-        }
-        Ordenador.insertionSort(array);
-        // Atualizar lista
+    public synchronized void incrementarContador() {
+       
     }
 }
