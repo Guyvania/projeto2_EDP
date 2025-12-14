@@ -17,7 +17,11 @@ public class SistemaPrincipalOrdenacao {
     public static void main(String[] args) {
         int[] teste = {5, 2, 8, 1, 9};
         Ordenador.insertionSort(teste);
-        System.out.println(Arrays.toString(teste));    }
+        System.out.println(Arrays.toString(teste));    
+    
+        int[] teste2 = {45, 12, 89, 34, 67, 23, 78, 56, 91, 14};
+        Ordenador.mergeSort(teste2, 0, teste2.length - 1);
+    }
 }
 
 class Ordenador {
@@ -76,7 +80,6 @@ class Ordenador {
             k++;
         }
     }
-
 }
 
 class Sistema {
