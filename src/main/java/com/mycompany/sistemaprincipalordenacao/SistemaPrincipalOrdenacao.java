@@ -23,24 +23,56 @@ public class SistemaPrincipalOrdenacao {
         Ordenador.mergeSort(teste2, 0, teste2.length - 1);
         
         SistemaConcorrente sistema = new SistemaConcorrente();
+        
+        System.out.println("=== SISTEMA DE ORDENAÇÃO CONCORRENTE ===\n");
 
         Thread gerador = new Thread(new Runnable() {
-        public void run() {
-        for (int i = 1; i <= 5; i++) {
-            sistema.adicionarTarefa(i);
-            sistema.incrementarContador();
-        }
+            public void run() {
+                int[] tarefas = {45, 12, 89, 34, 67, 23, 78, 56, 91, 14, 
+                                72, 39, 81, 25, 63, 47, 29, 84, 51, 36};
+                
+                for (int i = 0; i < tarefas.length; i++) {
+                    sistema.adicionarTarefa(tarefas[i]);
+                    sistema.incrementarContador();
+                    
+                    try {
+                        Thread.sleep(150);
+                    } catch (InterruptedException e) {
+                        System.out.println("Gerador interrompido");
+                    }
+                }
+                System.out.println("\n[GERADOR] Todas as tarefas foram criadas");
+            }
+        }, "Gerador");
         
         Thread processador = new Thread(new Runnable() {
             public void run() {
                 sistema.processarTarefas();
+                System.out.println("[PROCESSADOR] Finalizou processamento");
             }
         }, "Processador");
-    }
-});
-        gerador.start();
         
-    }
+        Thread ordenador = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Thread.sleep(800);
+                    sistema.ordenarTarefasConcluidas();
+                    
+                    Thread.sleep(900);
+                    sistema.ordenarTarefasConcluidas();
+                    
+                    Thread.sleep(700);
+                    sistema.ordenarTarefasConcluidas();
+                } catch (InterruptedException e) {
+                    System.out.println("Ordenador interrompido");
+                }
+                System.out.println("[ORDENADOR] Finalizou ordenações");
+            }
+        }, "Ordenador");
+        
+        gerador.start();
+        processador.start();
+        ordenador.start();
 }
 
 class Ordenador {
