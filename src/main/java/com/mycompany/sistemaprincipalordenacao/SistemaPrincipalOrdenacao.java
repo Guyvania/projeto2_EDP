@@ -137,4 +137,47 @@ class SistemaConcorrente {
             }
         }
     }
+    
+    public void finalizarExecucao() {
+        executando = false;
+        synchronized(lock) {
+            lock.notifyAll();
+        }
+    }
+    
+    public void ordenarTarefasConcluidas() {
+        synchronized(lock) {
+            if (tarefasConcluidas.isEmpty()) {
+                System.out.println("Nenhuma tarefa para ordenar");
+                return;
+            }
+            
+            int[] array = new int[tarefasConcluidas.size()];
+            for (int i = 0; i < array.length; i++) {
+                array[i] = tarefasConcluidas.get(i);
+            }
+            
+            System.out.println("\n=== ORDENANDO " + array.length + " TAREFAS ===");
+            System.out.print("Antes: ");
+            for (int n : array) System.out.print(n + " ");
+            
+            if (array.length <= 10) {
+                System.out.println("\n[Insertion Sort]");
+                Ordenador.insertionSort(array);
+            } else {
+                System.out.println("\n[Merge Sort]");
+                Ordenador.mergeSort(array, 0, array.length - 1);
+            }
+            
+            System.out.print("Depois: ");
+            for (int n : array) System.out.print(n + " ");
+            System.out.println("\n");
+            
+            tarefasConcluidas.clear();
+            for (int n : array) {
+                tarefasConcluidas.add(n);
+            }
+        }
+    }
+
 }
