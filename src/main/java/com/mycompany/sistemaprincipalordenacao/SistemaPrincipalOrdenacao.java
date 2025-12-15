@@ -86,6 +86,8 @@ public class SistemaPrincipalOrdenacao {
         catch (InterruptedException e) {
             System.out.println("Thread principal interrompida");
         }
+        
+        
     }
 }
 
@@ -158,11 +160,14 @@ class SistemaConcorrente {
     public void adicionarTarefa(int id) {
         synchronized(lock) {
             tarefas.add(id);
+            System.out.println("[" + Thread.currentThread().getName() +   "] Tarefa " + id + " adicionada");
+            lock.notify();
         }   
     }
     
     public synchronized void incrementarContador() {
        contador++;
+       System.out.println("[" + Thread.currentThread().getName() + "] Contador: " + contador);
     }
     
     public void processarTarefas() {
@@ -214,7 +219,6 @@ class SistemaConcorrente {
                 System.out.println("\n[Merge Sort]");
                 Ordenador.mergeSort(array, 0, array.length - 1);
             }
-      
             
             System.out.print("Depois: ");
             for (int n : array) System.out.print(n + " ");
@@ -226,5 +230,4 @@ class SistemaConcorrente {
             }
         }
     }
-
 }
