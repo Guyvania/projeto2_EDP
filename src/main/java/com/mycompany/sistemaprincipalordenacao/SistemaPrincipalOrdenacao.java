@@ -21,6 +21,18 @@ public class SistemaPrincipalOrdenacao {
     
         int[] teste2 = {45, 12, 89, 34, 67, 23, 78, 56, 91, 14};
         Ordenador.mergeSort(teste2, 0, teste2.length - 1);
+        
+        SistemaConcorrente sistema = new SistemaConcorrente();
+
+        Thread gerador = new Thread(new Runnable() {
+        public void run() {
+        for (int i = 1; i <= 5; i++) {
+            sistema.adicionarTarefa(i);
+            sistema.incrementarContador();
+        }
+    }
+});
+    gerador.start();
     }
 }
 
@@ -89,10 +101,12 @@ class SistemaConcorrente {
     private List<Integer> tarefasConcluidas = new ArrayList<>();
     
     //private volatile boolean executando = true;
-    //private final Object lock = new Object();
+    private final Object lock = new Object();
     
     public void adicionarTarefa(int id) {
-        tarefas.add(id);
+        synchronized(lock) {
+            tarefas.add(id);
+        }   
     }
     
     public synchronized void incrementarContador() {
