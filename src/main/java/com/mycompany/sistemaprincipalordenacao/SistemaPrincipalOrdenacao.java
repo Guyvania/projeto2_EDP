@@ -87,7 +87,12 @@ public class SistemaPrincipalOrdenacao {
             System.out.println("Thread principal interrompida");
         }
         
-        
+        System.out.println("\n" + "=".repeat(50));
+        System.out.println("RESULTADOS FINAIS:");
+        System.out.println("Total de tarefas processadas: " + sistema.getContador());
+        System.out.println("Tarefas concluídas (ordenadas): " + sistema.getTarefasConcluidas());
+        System.out.println("=".repeat(50));
+
     }
 }
 
@@ -189,13 +194,6 @@ class SistemaConcorrente {
         }
     }
     
-    public void finalizarExecucao() {
-        executando = false;
-        synchronized(lock) {
-            lock.notifyAll();
-        }
-    }
-    
     public void ordenarTarefasConcluidas() {
         synchronized(lock) {
             if (tarefasConcluidas.isEmpty()) {
@@ -230,4 +228,22 @@ class SistemaConcorrente {
             }
         }
     }
+    
+    public void finalizarExecucao() {
+        executando = false;
+        synchronized(lock) {
+            lock.notifyAll();
+        }
+    }
+    
+    public int getContador() {
+        return contador;
+    }
+    
+    public List<Integer> getTarefasConcluidas() {
+        synchronized(lock) {
+            return new ArrayList<>(tarefasConcluidas);
+        }
+    }
 }
+
