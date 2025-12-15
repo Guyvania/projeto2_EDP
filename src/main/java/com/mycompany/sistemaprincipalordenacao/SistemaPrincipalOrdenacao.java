@@ -168,6 +168,7 @@ class SistemaConcorrente {
                 System.out.println("\n[Merge Sort]");
                 Ordenador.mergeSort(array, 0, array.length - 1);
             }
+      
             
             System.out.print("Depois: ");
             for (int n : array) System.out.print(n + " ");
