@@ -99,8 +99,7 @@ class SistemaConcorrente {
     private int contador = 0;
     private List<Integer> tarefas = new ArrayList<>();
     private List<Integer> tarefasConcluidas = new ArrayList<>();
-    
-    //private volatile boolean executando = true;
+    private volatile boolean executando = true;
     private final Object lock = new Object();
     
     public void adicionarTarefa(int id) {
@@ -111,5 +110,24 @@ class SistemaConcorrente {
     
     public synchronized void incrementarContador() {
        contador++;
+    }
+    
+    public void processarTarefas() {
+        synchronized(lock) {
+            while (executando || !tarefas.isEmpty()) {
+                if (tarefas.isEmpty()) {
+                    try {
+                        lock.wait();  
+                    } catch (InterruptedException e) {
+                        System.out.println("Thread interrompida");
+                    }
+                    continue;
+                }
+            
+                int tarefa = tarefas.remove(0);
+                tarefasConcluidas.add(tarefa);
+                System.out.println("[" + Thread.currentThread().getName() + "] Processou tarefa " + tarefa);
+            }
+        }
     }
 }
