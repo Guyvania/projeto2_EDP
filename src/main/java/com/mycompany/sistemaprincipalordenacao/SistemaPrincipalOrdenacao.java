@@ -30,9 +30,16 @@ public class SistemaPrincipalOrdenacao {
             sistema.adicionarTarefa(i);
             sistema.incrementarContador();
         }
+        
+        Thread processador = new Thread(new Runnable() {
+            public void run() {
+                sistema.processarTarefas();
+            }
+        }, "Processador");
     }
 });
-    gerador.start();
+        gerador.start();
+        
     }
 }
 
