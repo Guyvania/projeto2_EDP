@@ -15,12 +15,12 @@ import java.util.List;
 public class SistemaPrincipalOrdenacao {
 
     public static void main(String[] args) {
-        int[] teste = {5, 2, 8, 1, 9};
+        /*int[] teste = {5, 2, 8, 1, 9};
         Ordenador.insertionSort(teste);
         System.out.println(Arrays.toString(teste));    
     
         int[] teste2 = {45, 12, 89, 34, 67, 23, 78, 56, 91, 14};
-        Ordenador.mergeSort(teste2, 0, teste2.length - 1);
+        Ordenador.mergeSort(teste2, 0, teste2.length - 1);*/
         
         SistemaConcorrente sistema = new SistemaConcorrente();
         
@@ -48,7 +48,7 @@ public class SistemaPrincipalOrdenacao {
         Thread processador = new Thread(new Runnable() {
             public void run() {
                 sistema.processarTarefas();
-                System.out.println("[PROCESSADOR] Finalizou processamento");
+                System.out.println("[PROCESSADOR] Fim do processamento");
             }
         }, "Processador");
         
@@ -70,9 +70,23 @@ public class SistemaPrincipalOrdenacao {
             }
         }, "Ordenador");
         
-        gerador.start();
-        processador.start();
-        ordenador.start();
+         gerador.start();
+         processador.start();
+         ordenador.start();
+        
+        try {
+            gerador.join();
+            System.out.println("\nGerador terminou, a fechar sistema...");
+            
+            sistema.finalizarExecucao();
+            
+            processador.join();
+            ordenador.join();
+        } 
+        catch (InterruptedException e) {
+            System.out.println("Thread principal interrompida");
+        }
+    }
 }
 
 class Ordenador {
@@ -189,7 +203,7 @@ class SistemaConcorrente {
                 array[i] = tarefasConcluidas.get(i);
             }
             
-            System.out.println("\n=== ORDENANDO " + array.length + " TAREFAS ===");
+            System.out.println("\n=== A ordenar " + array.length + " TAREFAS ===");
             System.out.print("Antes: ");
             for (int n : array) System.out.print(n + " ");
             
